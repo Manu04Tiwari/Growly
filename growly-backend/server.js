@@ -4,6 +4,13 @@ dotenv.config();
 import app from "./app.js";
 import connectDB from "./src/config/db.js";
 
+import cors from "cors";
+app.use(cors({
+  origin: "http://localhost:3000", // frontend URL
+  credentials: true
+}));
+
+
 const PORT = process.env.PORT || 5000;
 
 connectDB()
@@ -15,3 +22,4 @@ connectDB()
   .catch((err) => {
     console.error("Failed to start server:", err);
   });
+
