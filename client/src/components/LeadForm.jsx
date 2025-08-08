@@ -40,20 +40,37 @@ const LeadForm = () => {
     return newErrors;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      toast.error("Please correct the errors!");
-      return;
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const validationErrors = validate();
+  if (Object.keys(validationErrors).length > 0) {
+    setErrors(validationErrors);
+    toast.error("Please correct the errors!");
+    return;
+  }
+
+  try {
+    const response = await fetch("https:/growly-5.onrender.com/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to submit form");
     }
 
     toast.success("Demo request submitted!");
     setFormData({ name: "", email: "", phone: "", businessType: "", message: "" });
     setErrors({});
-  };
+  } catch (error) {
+    toast.error("Error submitting demo request. Please try again.");
+    console.error(error);
+  }
+};
 
   return (
     <section id="lead-form" className="lead-form">
