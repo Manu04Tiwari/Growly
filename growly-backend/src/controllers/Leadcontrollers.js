@@ -1,16 +1,31 @@
 import Lead from "../models/Lead.js";
 
-export const createLead = async (req, res) => {
+/**
+ * Create a lead (open endpoint)
+ */
+export const createLead = async (req, res, next) => {
   try {
-    const { name, email, message } = req.body;
-
-    if (!name || !email || !message) {
-      return res.status(400).json({ error: "All fields are required" });
+    const { name, email, phone, businessType, message } = req.body;
+    if (!name || !email) {
+      res.status(400);
+      return next(new Error("Name and email are required"));
     }
 
-    const lead = await Lead.create({ name, email, message });
+    const lead = await Lead.create({ name, email, phone, businessType, message });
     res.status(201).json({ success: true, data: lead });
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+/**
+ * Optional: get all leads (protected)
+ */
+export const getLeads = async (req, res, next) => {
+  try {
+    const leads = await Lead.find().sort({ createdAt: -1 });
+    res.json({ success: true, data: leads });
+  } catch (err) {
+    next(err);
   }
 };
