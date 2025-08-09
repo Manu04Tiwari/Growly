@@ -26,7 +26,7 @@ Growly is a full-stack web application for booking free demos and managing AI fo
 
 1. **Clone the repository:**
    ```sh
-   git clone <your-repo-url>
+   git clone <https://github.com/Manu04Tiwari/Growly.git>
    cd Growly
    ```
 
